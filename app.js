@@ -3,13 +3,12 @@ const { json } = require('express');
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+io.origins('*:*')
 app.get('/', (req, res) => {
   res.send('<h1>Hey Socket.io</h1>');
 });
 
-let allUser={
-
-}
+let allUser={}
 io.on('connection', (socket) => {
   console.log('a user connected',socket.id);
   socket.on('newUser', function (data, sessionId) {
@@ -45,6 +44,7 @@ io.on('connection', (socket) => {
     delete allUser[socket.id]
   });
 });
-http.listen(3000, () => {
+app.set('port', process.env.PORT || 3000);
+http.listen(app.get('port'), () => {
   console.log('listening on *:3000');
 });
