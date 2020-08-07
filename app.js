@@ -42,6 +42,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
     delete allUser[socket.id]
+    io.emit('diconnected',socket.id);
   });
 });
 app.set('port', process.env.PORT || 3000);
